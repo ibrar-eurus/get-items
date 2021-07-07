@@ -33,10 +33,11 @@ public class GetItemHandler implements RequestHandler<APIGatewayProxyRequestEven
         DynamoDbTable<Book> booksTable = dbClient.table(tableName, bookTableSchema);
         Map<String, String> queryStringParameters = input.getQueryStringParameters();
         if (queryStringParameters != null) {
-            context.getLogger().log(queryStringParameters.toString());
-            String itemPartitionKey = queryStringParameters.get("isbn");
+            String itemPartitionKey = queryStringParameters.get(Book.PARTITION_KEY);
             Book item = booksTable.getItem(Key.builder().partitionValue(itemPartitionKey).build());
-            response = new Gson().toJson(item);
+            if (item != null) {
+                response = new Gson().toJson(item);
+            }
         }
 
         return new APIGatewayProxyResponseEvent().withStatusCode(200)

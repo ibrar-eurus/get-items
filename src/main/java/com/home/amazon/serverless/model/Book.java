@@ -7,7 +7,9 @@ import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbParti
 @DynamoDbBean
 public class Book {
 
-    @SerializedName("isbn")
+    public static final String PARTITION_KEY = "isbn";
+
+    @SerializedName(PARTITION_KEY)
     private String isbn;
 
     @SerializedName("author")
